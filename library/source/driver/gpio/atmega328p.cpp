@@ -219,7 +219,7 @@ Atmega328p::IoPort Atmega328p::getIoPort(const uint8_t id) const noexcept
     // Return the port associated with the given ID, or an invalid enum on failure.
     if (utils::inRange(id, Port::B0, Port::B5))      { return IoPort::B; }
     else if (utils::inRange(id, Port::C0, Port::C5)) { return IoPort::C; }
-    else if (utils::inRange(id, Port::D0, Port::D5)) { return IoPort::D; }
+    else if (utils::inRange(id, Port::D0, Port::D7)) { return IoPort::D; }
     return IoPort::Count;
 }
 
@@ -280,7 +280,12 @@ ISR(PCINT2_vect) { myCallbacks.invoke(CbIndex::PortD); }
 namespace
 {
 // -----------------------------------------------------------------------------
-constexpr bool isPinFree(const uint8_t id) noexcept { return PinCount > id; }
+constexpr bool isPinFree(const uint8_t id) noexcept 
+{ 
+    // Return true if the given ID is valid (id > pinCount) and the bit is 0,
+    // i.e., the pin is not reserved by another instance.
+    return (PinCount > id) && !utils::read(myPinRegistry, id);
+}
 
 // -----------------------------------------------------------------------------
 constexpr bool isDirectionValid(const Direction direction) noexcept
