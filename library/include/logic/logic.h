@@ -150,6 +150,7 @@ private:
     void handleToggleButtonPressed() noexcept;
     void handleTempButtonPressed() noexcept;
     void restoreToggleStateFromEeprom() noexcept;
+    bool readSerialPort() noexcept;
 
     /** Toggle state address in EEPROM. */
     static constexpr uint16_t ToggleStateAddr{0U};

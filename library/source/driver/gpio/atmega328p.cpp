@@ -137,6 +137,9 @@ Atmega328p::Atmega328p(const uint8_t pin, const Direction direction, void (*call
 // -----------------------------------------------------------------------------
 Atmega328p::~Atmega328p() noexcept 
 {   
+    // Skip cleanup if the device is uninitialized, i.e. myHw is null.
+    if (nullptr == myHw) { return; }
+    
     // Free resources used for the GPIO before deletion.
     enableInterrupt(false);
     utils::clear(myHw->ddrx, myPin);
