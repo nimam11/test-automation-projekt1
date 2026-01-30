@@ -20,7 +20,7 @@ namespace driver
 namespace
 {
 /** Simulated transmission delay in microseconds. */
-constexpr std::size_t TransmissionDelay_us{10U};
+constexpr std::size_t TransmissionDelay_us{20U};
 
 // -----------------------------------------------------------------------------
 serial::Interface& initSerial() noexcept
