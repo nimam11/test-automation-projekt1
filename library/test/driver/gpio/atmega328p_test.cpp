@@ -134,7 +134,8 @@ void runOutputTest(const std::uint8_t id, GpioRegs& regs) noexcept
 void runInputTest(const std::uint8_t id, GpioRegs& regs) noexcept
 {
     // Get the physical pin on the given port.
-      const std::uint8_t pin{getPhysicalPin(id)};
+    const std::uint8_t pin{getPhysicalPin(id)};
+
     // Limit the scope of the GPIO instance.
     {
         // Create a new GPIO input with internal pull-up resistor enabled.
@@ -175,20 +176,15 @@ TEST(Gpio_Atmega328p, Initialization)
         // Create a new GPIO instance with the current pin number.
          gpio::Atmega328p gpio1{pin, gpio::Direction::Output};
         
-        // Example: gpio::Atmega328p gpio{pin, gpio::Direction::Output};
         // Expect the instance to be initialized correctly if the pin is valid.
         const bool pinValid{isPinValid(pin)};
         EXPECT_EQ(gpio1.isInitialized(), pinValid);
-        
-        // Tips: Check if the instance is initialized by invoking gpio.isInitialized().
-        //       Check if the pin is valid by invoking isPinValid(pin).
-        //       Use EXPECT_TRUE(), EXPECT_FALSE, and/or EXPECT_EQ to validate the functionality.
 
         // Create another GPIO instance on the same pin.
         gpio::Atmega328p gpio2{pin, gpio::Direction::Output};
         
         // Expect the instance to not be initialized, since the pin is already reserved.
-         EXPECT_FALSE(gpio2.isInitialized() && pinValid);
+        EXPECT_FALSE(gpio2.isInitialized() && pinValid);
     }
 }
 
@@ -253,4 +249,3 @@ TEST(Gpio_Atmega328p, Input)
 } // namespace driver
 
 #endif /** TESTSUITE */
-

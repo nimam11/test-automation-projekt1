@@ -1,5 +1,7 @@
 # HW/SW integration specification example
 
+Bra beskrivet. Försök dock att inte blanda engelska och svenska, men OK! :)
+
 ## Prerequisites
 * Build and flash an ATmega328p processor.
 * Run the system, open a serial terminal.

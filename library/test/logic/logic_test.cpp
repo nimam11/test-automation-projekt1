@@ -17,9 +17,6 @@
 #include "driver/watchdog/stub.h"
 #include "logic/stub.h"
 
-//! @todo Remove this #ifdef block once all stubs are implemented!
-#ifdef STUBS_IMPLEMENTED
-
 #ifdef TESTSUITE
 
 namespace logic
@@ -234,7 +231,6 @@ TEST(Logic, ToggleHandling)
         logic.handleDebounceTimerTimeout();
 
         EXPECT_FALSE(mock.toggleTimer.isEnabled());
-        
     }
 
     // Case 2 - Press the toggle button, simulate button event.
@@ -384,18 +380,15 @@ TEST(Logic, Eeprom)
     {    
         // Mark the toggle timer to have been enabled before poweroff by setting the
         // associated bit in EEPROM before creating the logic implementation.
+        constexpr std::uint16_t timerAddr{logic::Stub::toggleStateAddr()};
+        constexpr std::uint8_t timerEnabled{1U};
+        Mock mock{};
+        mock.eeprom.write(timerAddr, timerEnabled); 
         
         // Create logic implementation and run the system.
-
         // Verify that the toggle timer was enabled during initialization.
-        
-
-        Mock mock{};
-        mock.eeprom.write(0U, 1U);  // Mark toggle timer as enabled before poweroff
-
         logic::Interface& logic{mock.createLogic()};
         mock.runSystem();
-
         EXPECT_TRUE(mock.toggleTimer.isEnabled());
     }
 }
@@ -403,6 +396,3 @@ TEST(Logic, Eeprom)
 } // namespace logic
 
 #endif /** TESTSUITE */
-
-//! @todo Remove this #endif once all stubs are implemented!
-#endif /** STUBS_IMPLEMENTED */
