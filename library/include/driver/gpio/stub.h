@@ -22,7 +22,7 @@ public:
      */
     Stub() noexcept
         : myInitialized{true}
-        , myValue{true}
+        , myValue{false} // Fix: GPIO disabled on startup.
         , myInterruptEnabled{false}
     {}
 
