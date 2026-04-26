@@ -14,13 +14,12 @@
 
 #ifdef TESTSUITE
 
-//! @todo Implement tests according to project requirements.
 namespace driver
 {
 namespace
 {
 /** Simulated transmission delay in microseconds. */
-constexpr std::size_t TransmissionDelay_us{20U};
+constexpr std::size_t TransmissionDelay_us{100U};
 
 // -----------------------------------------------------------------------------
 serial::Interface& initSerial() noexcept
@@ -96,7 +95,6 @@ void readDataRegThread(const std::string& msg, const bool& stop) noexcept
         
         // Set UDRE0 to signal that the data has been read and the register is empty.
         utils::set(UCSR0A, UDRE0);
-
     }
 }
 
@@ -107,19 +105,18 @@ void readDataRegThread(const std::string& msg, const bool& stop) noexcept
  */
 TEST(Serial_Atmega328p, Initialization)
 {
-    //! @todo Test serial initialization:
-        //! - Verify that isInitialized() returns true.
-        serial::Interface& serial{serial::Atmega328p::getInstance()};
-        EXPECT_TRUE(serial.isInitialized());
-        //! - Verify that the driver can be enabled/disabled.
-        serial.setEnabled(false);
-        EXPECT_FALSE(serial.isEnabled());
-        serial.setEnabled(true);
-        EXPECT_TRUE(serial.isEnabled());
+    //! - Verify that isInitialized() returns true.
+    serial::Interface& serial{serial::Atmega328p::getInstance()};
+    EXPECT_TRUE(serial.isInitialized());
+    //! - Verify that the driver can be enabled/disabled.
+    serial.setEnabled(false);
+    EXPECT_FALSE(serial.isEnabled());
+    serial.setEnabled(true);
+    EXPECT_TRUE(serial.isEnabled());
 
-        //! - Check that baud rate can be read, it should be 9600 kbps.
-        constexpr uint32_t expectedBaudRate{9600U};
-        EXPECT_EQ(serial.baudRate_bps(), expectedBaudRate);
+    //! - Check that baud rate can be read, it should be 9600 kbps.
+    constexpr uint32_t expectedBaudRate{9600U};
+    EXPECT_EQ(serial.baudRate_bps(), expectedBaudRate);
 }
 
 /**
@@ -148,9 +145,6 @@ TEST(Serial_Atmega328p, Transmit)
     t2.join();
     t3.join();
 }
-
-//! @todo Add more tests here!
-
 } // namespace
 } // namespace driver.
 

@@ -17,9 +17,6 @@
 #include "driver/watchdog/stub.h"
 #include "logic/stub.h"
 
-//! @todo Remove this #ifdef block once all stubs are implemented!
-#ifdef STUBS_IMPLEMENTED
-
 #ifdef TESTSUITE
 
 namespace logic
@@ -333,7 +330,7 @@ TEST(Logic, TempHandling)
         mock.debounceTimer.setTimedOut(true);
         logic.handleDebounceTimerTimeout();
 
-        EXPECT_EQ(mock.serial.getWriteCount(), 0U);
+        EXPECT_EQ(mock.logicImpl->tempPrintoutCount(), 0U);
     }
 
     // Case 2 - Press the temperature button, simulate button event.
@@ -346,7 +343,7 @@ TEST(Logic, TempHandling)
         mock.debounceTimer.setTimedOut(true);
         logic.handleDebounceTimerTimeout();
 
-        EXPECT_EQ(mock.serial.getWriteCount(), 1U);
+        EXPECT_EQ(mock.logicImpl->tempPrintoutCount(), 1U);
     }
 
     // Case 3 - Simulate temperature timer timeout.
@@ -355,7 +352,7 @@ TEST(Logic, TempHandling)
         mock.tempTimer.setTimedOut(true);
         logic.handleTempTimerTimeout();
 
-        EXPECT_EQ(mock.serial.getWriteCount(), 2U);
+        EXPECT_EQ(mock.logicImpl->tempPrintoutCount(), 2U);
     }
 }
 
@@ -373,7 +370,7 @@ TEST(Logic, Eeprom)
           
         // Verify that the toggle timer is disabled after initialization.
         Mock mock{};
-        logic::Interface& logic{mock.createLogic()};
+        mock.createLogic();
         mock.runSystem();
 
         EXPECT_FALSE(mock.toggleTimer.isEnabled());
@@ -392,10 +389,8 @@ TEST(Logic, Eeprom)
 
         Mock mock{};
         mock.eeprom.write(0U, 1U);  // Mark toggle timer as enabled before poweroff
-
-        logic::Interface& logic{mock.createLogic()};
+        mock.createLogic();
         mock.runSystem();
-
         EXPECT_TRUE(mock.toggleTimer.isEnabled());
     }
 }
@@ -403,6 +398,3 @@ TEST(Logic, Eeprom)
 } // namespace logic
 
 #endif /** TESTSUITE */
-
-//! @todo Remove this #endif once all stubs are implemented!
-#endif /** STUBS_IMPLEMENTED */
